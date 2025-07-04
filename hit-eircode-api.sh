@@ -1,0 +1,16 @@
+curl 'https://api-finder3.eircode.ie/autocomplete?address=d15+&language=en&country=IE&token=gBQ9ZTuzgMuwa_XgmkB2zX_GsON3QfDCkF1YNbpdNKTRfqIcuH-MwQbOcj6N_mF7nonPdFTo8op0xgv_7rZpmngxtmeGLb7_figKA4wzJBQ&version=3.1.71' \
+	-H 'accept: */*' \
+	-H 'accept-language: en-GB,en;q=0.8' \
+	-H 'cache-control: no-cache' \
+	-H 'origin: https://finder.eircode.ie' \
+	-H 'pragma: no-cache' \
+	-H 'priority: u=1, i' \
+	-H 'referer: https://finder.eircode.ie/' \
+	-H 'sec-ch-ua: "Brave";v="135", "Not-A.Brand";v="8", "Chromium";v="135"' \
+	-H 'sec-ch-ua-mobile: ?0' \
+	-H 'sec-ch-ua-platform: "macOS"' \
+	-H 'sec-fetch-dest: empty' \
+	-H 'sec-fetch-mode: cors' \
+	-H 'sec-fetch-site: same-site' \
+	-H 'sec-gpc: 1' \
+	-H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36'
