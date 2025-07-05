@@ -46,7 +46,4 @@ for EIR_CODE in permutations_data:
 with open('results_A92', 'w') as f:
     json.dump(results_data, f)
 
-
-
-
-# print(data)
+print('FINISHED ITERATIOS')
