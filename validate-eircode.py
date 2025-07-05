@@ -1,9 +1,9 @@
 import requests
 
-EIR_CODE = "D15X653"
+EIR_CODE = "A92AC62"
 
 # get KEY
-with open('EIRCODE_KEY') as f:
+with open('EIRCODE_API_KEY') as f:
     API_KEY = f.read()
     print('read eircode key: ', API_KEY)
 
