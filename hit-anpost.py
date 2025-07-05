@@ -29,12 +29,7 @@ for EIR_CODE in permutations_data:
         soup = BeautifulSoup(html, 'lxml')
         all_td_cells = soup.find_all('td')
         # handle issue
-        if len(all_td_cells) != 1:
-            print(html)
-            with open('results_A92', 'w') as f:
-                json.dump(results_data, f)
-            raise Exception('Hey, I found more/less than one table cell with address')
-        address = all_td_cells[0].text.strip()
+        address = all_td_cells[-1].text.strip()
         routing_key = EIR_CODE[:3]
         # check address contains expected eirccode
         if routing_key not in address:
@@ -42,6 +37,11 @@ for EIR_CODE in permutations_data:
                 json.dump(results_data, f)
             raise Exception(f'Hey, ROUTING KEY {routing_key} was not found in the address = {address}')
         results_data[EIR_CODE] = address
+        if len(all_td_cells) != 1:
+            print(html)
+            with open('results_A92', 'w') as f:
+                json.dump(results_data, f)
+            raise Exception('Hey, I found more/less than one table cell with address')
         break
 with open('results_A92', 'w') as f:
     json.dump(results_data, f)
