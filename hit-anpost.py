@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 
 with open('./results_A92') as f:
     results_data = json.load(f)
+    initial_len = len(results_data)
+    next_batch = initial_len + 100
     last_key = list(results_data)[-1]
 with open('./permutations_A92') as f:
     permutations_data = json.load(f)
@@ -30,20 +32,15 @@ for EIR_CODE in permutations_data:
         all_td_cells = soup.find_all('td')
         # handle issue
         address = all_td_cells[-1].text.strip()
-        routing_key = EIR_CODE[:3]
-        # check address contains expected eirccode
-        if routing_key not in address:
-            with open('results_A92', 'w') as f:
-                json.dump(results_data, f)
-            raise Exception(f'Hey, ROUTING KEY {routing_key} was not found in the address = {address}')
         results_data[EIR_CODE] = address
         if len(all_td_cells) != 1:
             print(html)
             with open('results_A92', 'w') as f:
                 json.dump(results_data, f)
             raise Exception('Hey, I found more/less than one table cell with address')
-        break
+        if initial_len  >= next_batch:
+            break
 with open('results_A92', 'w') as f:
     json.dump(results_data, f)
 
-print('FINISHED ITERATIOS')
+print('FINISHED ITERATIOS AFTER 100 records')
