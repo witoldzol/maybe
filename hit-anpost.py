@@ -3,6 +3,15 @@ import pickle
 import json
 from bs4 import BeautifulSoup
 
+def update_last_processed_item(last_key: str = None, index: int = None):
+    if last_key is None:
+        raise Exception("last_key is None")
+    if last_key_index is None:
+        raise Exception("last_key_index is None")
+    with open('LAST_PROCESSED_EIRCODE', 'w') as f:
+        offset = {"last_eircode": last_key, "eircode_index": index}
+        json.dump(offset, f)
+
 # RESULTS DATA
 results_data = []
 with open('./results_A92') as f:
@@ -13,30 +22,22 @@ last_key = next(iter(results_data[-1]))
 
 # PERMUTATIONS
 with open('./permutations_A92', 'rb') as f:
-    permutations_data = pickle.load(f)
-index = None
-for idx, x in enumerate(permutations_data):
-    if x == last_key:
-        print('found it ')
-        index = idx
-if index is None:
-    raise 'failed'
-print('index of ', last_key, ' ', index)
-with open('LAST_PROCESSED_EIRCODE', 'w') as f:
-    json.dump({"last_eircode": last_key,"eircode_index":index}, f)
-raise 'done'
+    permutations_data: list[str] = pickle.load(f)
+
+# LOAD LAST PROCESSED EIRCODE
+with open('LAST_PROCESSED_EIRCODE', 'r') as f:
+    offset_info = json.load(f)
+    last_key = offset_info["last_eircode"]
+    index = offset_info["eircode_index"]
+if permutations_data[index] != last_key:
+    raise Exception(f"Last processed index = {index} doesnt match the last processed EIRCODE = {last_key}")
+
+MAX_ITEMS_TO_PROCESS = 10
 count = 0
-catchup = True
 with open('./results_A92', 'a') as fa:
-    print('last key', last_key)
-    for EIR_CODE in permutations_data:
-        if catchup:
-            if EIR_CODE == last_key:
-                print(f"found last key = {last_key}, continuing processing keys")
-                catchup = False
-                continue
-            else:
-                continue
+    for idx, EIR_CODE in enumerate(permutations_data[index:]):
+        last_key_processed = EIR_CODE
+        last_key_index = idx
         print(f'processing key {EIR_CODE}')
         url = f'https://forms.anpost.ie/enquiry/SenderDetails/SearchForAddress/?findPostalAddress={EIR_CODE}'
         headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3', 'Content-Type': 'application/json' }
@@ -59,8 +60,9 @@ with open('./results_A92', 'a') as fa:
         json.dump(new_data,fa)
         fa.write('\n')
         count += 1
-        if count >= 1000:
+        if count >= MAX_ITEMS_TO_PROCESS:
             break
 
+update_last_processed_item(last_key_processed, last_key_index + index)
 
 print('FINISHED ITERATIOS AFTER 100 records')
