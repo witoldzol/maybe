@@ -1,4 +1,5 @@
 import requests
+import pickle
 import json
 from bs4 import BeautifulSoup
 
@@ -11,8 +12,19 @@ with open('./results_A92') as f:
 last_key = next(iter(results_data[-1]))
 
 # PERMUTATIONS
-with open('./permutations_A92') as f:
-    permutations_data = json.load(f)
+with open('./permutations_A92', 'rb') as f:
+    permutations_data = pickle.load(f)
+index = None
+for idx, x in enumerate(permutations_data):
+    if x == last_key:
+        print('found it ')
+        index = idx
+if index is None:
+    raise 'failed'
+print('index of ', last_key, ' ', index)
+with open('LAST_PROCESSED_EIRCODE', 'w') as f:
+    json.dump({"last_eircode": last_key,"eircode_index":index}, f)
+raise 'done'
 count = 0
 catchup = True
 with open('./results_A92', 'a') as fa:
