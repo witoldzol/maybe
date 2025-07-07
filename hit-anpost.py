@@ -1,7 +1,22 @@
 import requests
+import queue
 import pickle
 import json
 from bs4 import BeautifulSoup
+
+def file_writer_worker(q, filename):
+    with open(filename, 'a') as f:
+        while True:
+            try:
+                result = q.get(timeout=1)
+                if result is None:
+                    print("File writer received None, stopping work")
+                    break
+                json.dump(result, f)
+                f.write("\n")
+                q.task_done()
+            except queue.Empty:
+                pass # empty, try again
 
 def update_last_processed_item(last_key: str = None, index: int = None):
     if last_key is None:
