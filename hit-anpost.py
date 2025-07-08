@@ -45,7 +45,7 @@ with open('LAST_PROCESSED_EIRCODE', 'r') as f:
     last_key = offset_info["last_eircode"]
     index = offset_info["eircode_index"]
 if permutations_data[index] != last_key:
-    raise Exception(f"Last processed index = {index} doesnt match the last processed EIRCODE = {last_key}, it equals = {permutations_data[index]}")
+    raise Exception(f"Last processed index = {index} doesnt match the last processed EIRCODE = {last_key}, it equals = {permutations_data[index]}\n{last_key} has index in permutations_data of {permutations_data.index(last_key)}")
 
 # INCREMENT ( LETS NOT PROCESS THE SAME ITEM AGAIN)
 index = index + 1
