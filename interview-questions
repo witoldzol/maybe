@@ -1,0 +1,12 @@
+python
+- rest api 
+  pydantic
+
+  architecture:
+  mu.ti tenant
+
+  async :user registration flow
+
+  data pipeline processing
+
+  cross service comunitation
